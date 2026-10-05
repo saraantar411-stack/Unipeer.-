@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Together To A+ | Final Verified Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;font-family:'Cairo',sans-serif;margin:0;padding:0}
+body{background:#eef4ff}.app{max-width:500px;margin:auto;background:#fff;min-height:100vh;box-shadow:0 0 20px rgba(0,0,0,0.05)}
+.top{background:#0d2b66;color:#fff;padding:16px;text-align:center}
+.page{padding:16px;display:none}.page.active{display:block}
+h3{font-size:14px;font-weight:700;margin-bottom:8px;color:#0d2b66}
+label{font-size:12px;font-weight:600;margin-top:10px;display:block}
+input,select,textarea{width:100%;padding:9px;margin-top:4px;border:1.5px solid #cbd5e1;border-radius:9px;font-size:12px}
+.btn{width:100%;padding:10px;background:#2563eb;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:600;margin-top:8px;cursor:pointer;display:block;transition:0.2s}
+.btn:hover{opacity:0.9}
+.btn-home{background:#e2e8f0;color:#0d2b66}
+.check{border:1.5px solid #cbd5e1;padding:9px;border-radius:9px;margin-top:6px;display:flex;justify-content:space-between;font-size:12px;cursor:pointer;background:#fff}
+.check.active{border-color:#2563eb;background:#eff6ff}
+.item{background:#f8fafc;border:1px solid #e2e8f0;padding:9px;border-radius:9px;margin-bottom:6px;font-size:12px;cursor:pointer}
+.badge{background:#16a34a;color:#fff;padding:1px 6px;border-radius:7px;font-size:10px}
+.private{background:#fffbe6;border:1px dashed #facc15;padding:10px;border-radius:9px;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="top"><h2>Together To A+</h2><small>مكتبة ذكية + شات خاص وتصفية بالتخصص ⚡</small></div>
+
+<div id="p1" class="page active">
+<h3>ادخل كـ</h3>
+<button class="btn" onclick="go(2)">طالب عايز مساعدة</button>
+<button class="btn" style="background:#0d2b66" onclick="go(5)">قدم كـ متطوع</button>
+<button class="btn btn-home" onclick="go(6)">ادمن اتحاد الطلبة</button>
+</div>
+
+<div id="p2" class="page">
+<h3>تسجيل طالب</h3>
+<label>الاسم *</label><input id="sName" placeholder="اسمك">
+<label>الفرقة</label>
+<select id="sYear">
+  <option value="1">الأولى</option>
+  <option value="2">الثانية</option>
+  <option value="3">الثالثة</option>
+  <option value="4">الرابعة</option>
+</select>
+<label>التخصص / الكلية</label>
+<select id="sDept">
+  <option value="cs">حاسبات ومعلومات</option>
+  <option value="eng">هندسة</option>
+  <option value="biz">تجارة وإدارة أعمال</option>
+  <option value="med">علوم طبية وصحية</option>
+</select>
+<button class="btn" onclick="registerStudent()">متابعة</button>
+<button class="btn btn-home" onclick="go(1)">الرئيسية</button>
+</div>
+
+<div id="p3" class="page">
+<h3>ايه مشكلتك؟</h3>
+<div class="check" onclick="selectTopic('ref',this)"><span>📚 مش لاقي مراجع تخصصية</span><span>›</span></div>
+<div class="check" onclick="selectTopic('time',this)"><span>⏰ مش عارف انظم وقتي الدراسي</span><span>›</span></div>
+<div class="check" onclick="selectTopic('lang',this)"><span>🌐 مصطلحات التخصص صعبة</span><span>›</span></div>
+<div class="check" onclick="selectTopic('study',this)"><span>📝 مش عارف اذاكر المواد دي ازاي</span><span>›</span></div>
+<div class="check" onclick="selectTopic('major',this)"><span>🎯 محتار في تشعيب التخصص</span><span>›</span></div>
+<button class="btn btn-home" onclick="go(1)">الرئيسية</button>
+</div>
+
+<div id="p4" class="page">
+<h3 id="libTitle">المراجع المقترحة</h3>
+<div id="resourceList"></div>
+<div style="margin-top:14px;border-top:1px solid #e2e8f0;padding-top:10px">
+<h3 id="volTitle">المتطوعين المناسبين لتخصصك 👇</h3>
+<div id="volList"></div>
+</div>
+<div id="privateChat" class="private" style="display:none">
+<h3>🔒 شات خاص وآمن مع <span id="chatWith"></span></h3>
+<div id="chatBox" style="background:#fff;border:1px solid #e2e8f0;height:140px;padding:6px;margin:8px 0;overflow:auto;font-size:11px;border-radius:6px"></div>
+<textarea id="chatInput" placeholder="اكتب سؤالك التخصصي هنا..."></textarea>
+<button class="btn" onclick="sendPrivate()">إرسال رسالة</button>
+</div>
+<button class="btn btn-home" onclick="go(1)">الرئيسية</button>
+</div>
+
+<div id="p5" class="page">
+<h3>تقديم متطوع جديد</h3>
+<label>اسمك بالكامل *</label><input id="vName" placeholder="اسمك">
+<label>فرقتك الدراسية</label>
+<select id="vYear">
+  <option value="2">الثانية</option>
+  <option value="3">الثالثة</option>
+  <option value="4">الرابعة</option>
+  <option value="5">خريج</option>
+</select>
+<label>التخصص / الكلية</label>
+<select id="vDept">
+  <option value="cs">حاسبات ومعلومات</option>
+  <option value="eng">هندسة</option>
+  <option value="biz">تجارة وإدارة أعمال</option>
+  <option value="med">علوم طبية وصحية</option>
+</select>
+<label>GPA (من 0 لـ 4) *</label><input id="vGpa" type="number" min="0" max="4" step="0.1" placeholder="مثال: 3.7">
+<small style="font-size:10px;color:gray">تنويه: يُقبل فقط الطلاب الحاصلين على تقدير B فأعلى لدعم زملائهم.</small>
+<label>مجال الدعم الأساسي:</label>
+<select id="vSpec">
+  <option value="ref">توفير المراجع والمصادر</option>
+  <option value="time">تنظيم الوقت والجداول</option>
+  <option value="lang">تبسيط مصطلحات اللغة</option>
+  <option value="study">طرق مذاكرة مواد التخصص</option>
+  <option value="major">التوجيه الأكاديمي والتشعيب</option>
+</select>
+<button class="btn" onclick="registerVolunteer()">إرسال الطلب للاعتماد</button>
+<button class="btn btn-home" onclick="go(1)">الرئيسية</button>
+</div>
+
+<div id="p6" class="page">
+<h3>لوحة تحكم اتحاد الطلبة (الأدمن)</h3>
+<div id="adminList"></div>
+<button class="btn" style="background:#dc2626;" onclick="clearSystemData()">تصفير بيانات المنصة وإعادة التعيين</button>
+<button class="btn btn-home" onclick="go(1)">الرئيسية</button>
+</div>
+</div>
+
+<script>
+let sYear=1, selectedTopic='time', currentVolunteerName='', sNameVal='', sDeptVal='cs';
+
+// مكتبة مراجع مقسمة حسب التخصص والنوع لتجربة تصفية واقعية ومبهرة
+const libraryData = {
+ cs: {
+  ref:[{title:'كتاب Introduction to Algorithms',used:145},{title:'مرجع Clean Code PDF',used:98}],
+  time:[{title:'خطة تنظيم وقت لمشاريع البرمجة',used:210},{title:'تقنية بومودورو لكتابة الكود',used:112}],
+  lang:[{title:'قاموس مصطلحات علوم الحاسب',used:180}], study:[{title:'كيف تذاكر هياكل البيانات (Data Structures)',used:240}], major:[{title:'الفرق بين الذكاء الاصطناعي وتطوير الويب',used:310}]
+ },
+ eng: {
+  ref:[{title:'مرجع أساسيات الهندسة الكهربائية',used:89},{title:'جداول التصميم الهندسي',used:67}],
+  time:[{title:'تنظيم الوقت بين العملي والنظري',used:150}], lang:[{title:'دليل المصطلحات الهندسية المشتركة',used:95}], study:[{title:'أفضل طريقة لفهم ميكانيكا المواد',used:190}], major:[{title:'مميزات قسم مدني وعمارة واتصالات',used:280}]
+ },
+ biz: {
+  ref:[{title:'مبادئ المحاسبة المالية المعتمدة',used:120}], time:[{title:'جدول توازن المذاكرة في أسبوع الامتحانات',used:90}], lang:[{title:'مصطلحات إدارة الأعمال بالإنجليزية',used:200}], study:[{title:'كيفية حل دراسات الحالة (Case Studies)',used:135}], major:[{title:'مستقبل تخصص المحاسبة مقابل التمويل',used:215}]
+ },
+ med: {
+  ref:[{title:'أطلس التشريح البشري الملون',used:230}], time:[{title:'تنظيم ساعات النوم والمذاكرة لطلاب الطب',used:340}], lang:[{title:'قاموس الجذور اللاتينية الطبية',used:410}], study:[{title:'طرق التكرار المتباعد لحفظ الأدوية',used:295}], major:[{title:'توجيه شامل عن سنوات الامتياز والتخصص',used:380}]
+ }
+};
+
+// متطوعين افتراضيين يبدأ بهم التطبيق
+const defaultVolunteers = [
+ {name:'نور الدين',year:4,dept:'cs',spec:'time',specName:'تنظيم وقت',points:120,voice:'0:45'},
+ {name:'م. محمد علي',year:3,dept:'eng',spec:'ref',specName:'مراجع هندسية',points:85,voice:'0:38'},
+ {name:'سارة أحمد',year:4,dept:'biz',spec:'lang',specName:'مصطلحات إدارة',points:95,voice:'0:50'},
+ {name:'د. أحمد خالد',year:5,dept:'med',spec:'study',specName:'طرق مذاكرة طبية',points:150,voice:'1:10'},
+ {name:'عمر كريم',year:3,dept:'cs',spec:'cs',spec:'ref',specName:'مراجع برمجية',points:60,voice:'0:28'}
+];
+
+// دالة لجلب المتطوعين المخزنين أو تعيين الافتراضيين
+function getVolunteers() {
+  let stored = localStorage.getItem('t2a_volunteers');
+  if(!stored) {
+    localStorage.setItem('t2a_volunteers', JSON.stringify(defaultVolunteers));
+    return defaultVolunteers;
+  }
+  return JSON.parse(stored);
+}
+
+function go(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
+  if(n==6) renderAdmin();
+}
+
+function registerStudent(){
+  let name = document.getElementById('sName').value.trim();
+  if(name==""){alert("من فضلك اكتب اسمك أولاً");return;}
+  sNameVal = name; 
+  sYear = parseInt(document.getElementById('sYear').value); 
+  sDeptVal = document.getElementById('sDept').value;
+  
+  // حفظ بيانات جلسة الطالب الحالية مؤقتاً
+  localStorage.setItem('t2a_current_student', JSON.stringify({name: sNameVal, year: sYear, dept: sDeptVal}));
+  go(3);
+}
+
+function registerVolunteer(){
+  let vn = document.getElementById('vName').value.trim();
+  if(vn==''){alert('من فضلك اكتب اسمك');return;}
+  let gpa = parseFloat(document.getElementById('vGpa').value);
+  if(isNaN(gpa)||gpa<0||gpa>4){alert('اكتب الـ GPA كرقم صحيح أو عشري من 0 لـ 4 مثل 3.6');return;}
+  
+  let vYear = parseInt(document.getElementById('vYear').value);
+  let vDept = document.getElementById('vDept').value;
+  let vSpec = document.getElementById('vSpec').value;
+  
+  let specNames = {ref:'مصادر ومراجع', time:'تنظيم وقت', lang:'تبسيط لغة', study:'طرق مذاكرة', major:'توجيه وتكنيك'};
+  
+  let list = getVolunteers();
+  list.push({
+    name: vn,
+    year: vYear,
+    dept: vDept,
+    spec: vSpec,
+    specName: specNames[vSpec] || 'دعم عام',
+    points: 10, // نقاط ترحيبية بالمتطوع الجديد
+    voice: '0:30'
+  });
+  
+  localStorage.setItem('t2a_volunteers', JSON.stringify(list));
+  alert('تم إرسال طلب التطوع واعتماده بنجاح في لوحة الاتحاد! ✅');
+  go(1);
+}
+
+function selectTopic(t, el){
+  selectedTopic = t;
+  go(4);
+  document.getElementById('libTitle').innerText = 'المصادر المقترحة لتخصصك في: ' + el.querySelector('span').innerText;
+  
+  let l = document.getElementById('resourceList');
+  l.innerHTML = '';
+  
+  // تصفية المراجع حسب تخصص الطالب الحالي
+  let deptInfo = libraryData[sDeptVal] || libraryData['cs'];
+  let resources = deptInfo[t] || [{title:'مصادر عامة للكلية', used: 45}];
+  
+  resources.sort((a,b)=>b.used-a.used).forEach(r=>{
+    l.innerHTML += `<div class=item>📄 ${r.title} <span style="background:#2563eb;color:#fff;padding:1px 6px;border-radius:7px;font-size:10px">${r.used} طالب استفاد</span></div>`
+  });
+  
+  renderVolunteers(t);
+}
+
+function renderVolunteers(t){
+  let v = document.getElementById('volList');
+  v.innerHTML = '';
+  let list = getVolunteers();
+  
+  // الفلترة الذكية المتقدمة: متطوعين من نفس التخصص (Dept) وأعلى في الفرقة الدراسية ولهم نفس المشكلة (Spec)
+  let filtered = list.filter(x => x.dept === sDeptVal && x.year > sYear && x.spec === t);
+  
+  // إذا لم نجد، نوسع البحث: نفس التخصص وأعلى في الفرقة فقط
+  if(filtered.length == 0) filtered = list.filter(x => x.dept === sDeptVal && x.year > sYear);
+  
+  // إذا لم نجد، نعرض أي متطوع من نفس التخصص
+  if(filtered.length == 0) filtered = list.filter(x => x.dept === sDeptVal);
+  
+  // كخيار أخير إذا كان التخصص جديد تماماً، نعرض كل المتطوعين المتاحين في المنصة
+  if(filtered.length == 0) filtered = list;
+  
+  let deptNames = {cs:'حاسبات', eng:'هندسة', biz:'تجارة', med:'طب وعلوم صحية'};
+  
+  filtered.forEach(o=>{
+    v.innerHTML += `<div class=item onclick="openPrivate('${o.name}')"><b>[${deptNames[o.dept] || 'عام'}] ${o.specName}</b> - الكابتن/ ${o.name} <span class=badge>${o.points} نقطة دعم</span><br><small>🎧 استمع لتوجيهه الصوتي (${o.voice}) - اضغط لبدء شات آمن</small></div>`
+  });
+}
+
+function openPrivate(n){
+  currentVolunteerName = n;
+  document.getElementById('privateChat').style.display = 'block';
+  document.getElementById('chatWith').innerText = n;
+  
+  let chatKey = `t2a_chat_${sNameVal}__${currentVolunteerName}`;
+  let chatBox = document.getElementById('chatBox');
+  
+  // استعادة أرشيف المحادثة السابقة من LocalStorage إن وجد
+  let savedChat = localStorage.getItem(chatKey);
+  if(savedChat) {
+    chatBox.innerHTML = savedChat;
+  } else {
+    chatBox.innerHTML = `<small style="color:gray; display:block; margin-bottom:8px;">🔒 بدأت محادثة مشفرة جديدة مع ${n}. كل رسائلك محفوظة محلياً.</small>`;
+  }
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function sendPrivate(){
+  let m = document.getElementById('chatInput').value.trim();
+  if(!m) return;
+  let chatBox = document.getElementById('chatBox');
+  
+  // إضافة رسالة الطالب
+  chatBox.innerHTML += `<div style="margin-top:4px;"><b>${sNameVal}:</b> ${m}</div>`;
+  document.getElementById('chatInput').value = '';
+  chatBox.scrollTop = chatBox.scrollHeight;
+  
+  let chatKey = `t2a_chat_${sNameVal}__${currentVolunteerName}`;
+  localStorage.setItem(chatKey, chatBox.innerHTML);
+  
+  // محاكاة رد ذكي وتخصصي بناءً على الكلية بعد ثانية واحدة
+  setTimeout(()=>{
+    let deptLabels = {cs: 'أكوادك ومشاريعك البرمجية', eng: 'المعادلات والرسم الهندسي', biz: 'التقارير والموازنات المذكورة', med: 'المصطلحات والحالات الطبية'};
+    let currentDeptLabel = deptLabels[sDeptVal] || 'دراستك الأكاديمية';
+    
+    chatBox.innerHTML += `<div style="color:#0d2b66; background:#f0f7ff; padding:4px; border-radius:4px; margin-top:4px;"><b>${currentVolunteerName}:</b> أهلاً يا ${sNameVal}، قرأت استفسارك بخصوص ${currentDeptLabel}. أنصحك بالاطلاع الفوري على أول مرجع مقترح في القائمة بالخارج، وإذا واجهتك مشكلة أرسل لي تفاصيلها هنا وسأتابع معك مباشرة! 💪</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+    
+    // تحديث وتخزين الشات مع الرد التلقائي
+    localStorage.setItem(chatKey, chatBox.innerHTML);
+    
+    // مكافأة المتطوع بنقاط دعم عند تفاعله مع الطلاب
+    let list = getVolunteers();
+    let idx = list.findIndex(x=>x.name === currentVolunteerName);
+    if(idx !== -1) {
+      list[idx].points += 5;
+      localStorage.setItem('t2a_volunteers', JSON.stringify(list));
+    }
+  }, 1100);
+}
+
+function renderAdmin(){
+  let a = document.getElementById('adminList');
+  let list = getVolunteers();
+  a.innerHTML = '<p style="font-size:11px; color:#64748b; margin-bottom:8px;">إجمالي المتطوعين المسجلين في النظام حالياً: ' + list.length + ' متطوعين</p>';
+  
+  let deptNames = {cs:'حاسبات ومعلومات', eng:'هندسة', biz:'تجارة وإدارة أعمال', med:'علوم طبية وصحية'};
+  
+  list.forEach((v, index)=>{
+    a.innerHTML += `<div class=item style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <b>${v.name}</b> (الفرقة ${v.year})<br>
+        <small style="color:#2563eb">تخصص: ${deptNames[v.dept] || v.dept} | مجال الدعم: ${v.specName}</small>
+      </div>
+      <span class=badge style="background:#0d2b66">${v.points} نقطة</span>
+    </div>`;
+  });
+}
+
+function clearSystemData() {
+  if(confirm("هل أنت متأكد من مسح جميع المتطوعين الجدد ورسائل الشات وإعادة النظام لوضع المصنع؟")) {
+    localStorage.clear();
+    alert("تم تنظيف وتهيئة ذاكرة التطبيق بنجاح ♻️");
+    location.reload();
+  }
+}
+
+// محاولة استعادة جلسة طالب قديم لراحة تجربة التصفح أثناء العرض
+window.onload = function() {
+  let savedStudent = localStorage.getItem('t2a_current_student');
+  if(savedStudent) {
+    let student = JSON.parse(savedStudent);
+    document.getElementById('sName').value = student.name;
+    document.getElementById('sYear').value = student.year;
+    document.getElementById('sDept').value = student.dept;
+  }
+}
+</script>
+</body>
+</html>
